@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[13]:
+# In[14]:
 
 
 import scipy.integrate as sci
@@ -10,7 +10,7 @@ import math
 from matplotlib import pyplot
 from mpl_toolkits.mplot3d import Axes3D
 from itertools import product
-#from math import pi,cos ,sin
+
 
 # Setting $\frac{1}{4\pi \epsilon_0}$ to 1 for this homework
 
@@ -40,10 +40,10 @@ for j in r1_end:
     V1_simp_end.append(sci.simps(r1,dV0)) # Simpson's rule
     
 # electric field for straight line charge
-E1_front_trap =-np.diff(V1_trap_front)/np.diff(r1_front)
-E1_end_trap =-np.diff(V1_trap_end)/np.diff(r1_end)
-E1_front_simp =-np.diff(V1_simp_front)/np.diff(r1_front)
-E1_end_simp =-np.diff(V1_simp_end)/np.diff(r1_end)    
+E1_front_trap = -np.gradient(V1_trap_front,r1)
+E1_end_trap = -np.gradient(V1_trap_end,r1)
+E1_front_simp = -np.gradient(V1_simp_front,r1)
+E1_end_simp = -np.gradient(V1_simp_end,r1)   
 
 # plottign V of straight line charge   
 pyplot.plot(r1_front,V1_trap_front,'b-')
@@ -57,10 +57,10 @@ pyplot.legend()
 pyplot.show()
 
 # Plotting E field of straight line charge
-pyplot.plot(r1_front[0:99],E1_front_trap,'c-')
-pyplot.plot(r1_end[0:99],E1_end_trap,'c-',label="E from V by trapezoidal")
-pyplot.plot(r1_front[0:99],E1_front_simp,'m--')
-pyplot.plot(r1_end[0:99],E1_end_simp,'m--',label="E from V by Simpson's")
+pyplot.plot(r1_front,E1_front_trap,'c-')
+pyplot.plot(r1_end,E1_end_trap,'c-',label="E from V by trapezoidal")
+pyplot.plot(r1_front,E1_front_simp,'m--')
+pyplot.plot(r1_end,E1_end_simp,'m--',label="E from V by Simpson's")
 pyplot.xlabel('x')
 pyplot.ylabel('E(x)')
 pyplot.title("Electric field for straight line charge")
@@ -82,7 +82,9 @@ for i,j in product(range(0,len(x1)),range(0,len(y1))):
 
 # E field of right angle charge
 E_rightangle_x = -np.diff(V_rightangle,axis=-1)/.1
-E_rightangle_y = -np.diff(V_rightangle,axis=0)/.1   
+E_rightangle_y = -np.diff(V_rightangle,axis=0)/.1 
+E_ra_x = -np.gradient(V_rightangle,axis =1)
+E_ra_y = -np.gradient(V_rightangle,axis=0)
         
 # Plotting V of right angle charge
 fig1 = pyplot.figure()
@@ -95,7 +97,7 @@ diagram1.set_zlabel('V(x,y)')
 diagram1.view_init(60, 220)
 diagram1.set_title('Potential for right angle charge')
 
-# Plotting E_x of line charge
+# Plotting E_x of right angle charge
 fig2 = pyplot.figure()
 diagram_Ex = fig2.gca(projection='3d')
 X2, Y2 = np.meshgrid(x1[0:(len(x1)-1)], y1)
@@ -106,8 +108,7 @@ diagram_Ex.set_zlabel('$E_x$(x,y)')
 diagram_Ex.view_init(60, 220)
 diagram_Ex.set_title('$E_x$ of right angel charge')
 
-
-# Plotting E_y of line charge
+# Plotting E_y of right angle charge
 fig3 = pyplot.figure()
 diagram_Ey = fig3.gca(projection='3d')
 X3, Y3 = np.meshgrid(x1, y1[0:len(y1)-1])
