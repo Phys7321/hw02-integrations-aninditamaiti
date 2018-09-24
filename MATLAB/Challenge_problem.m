@@ -1,6 +1,6 @@
 clear all
 
-dt = @(x,y) (4 ./sqrt(2)) ./sqrt(y .^4 - x .^4);
+dt = @(x1,a) (2*sqrt(2)) ./sqrt(a .^4 - x1 .^4);
 Amp = linspace(0.1,7,100);
 T = [];
 for i=1:length(Amp)
