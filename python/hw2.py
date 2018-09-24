@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[14]:
+# In[2]:
 
 
 import scipy.integrate as sci
@@ -18,17 +18,18 @@ from itertools import product
 f1=lambda x,r1: 2*r1/(x-r1)
 f1vec=np.vectorize(f1)
 r1=np.linspace(0,1,100)
-r1_end = np.linspace(-10,-.5,100)
-r1_front = np.linspace(1.5,10,100)
+r1_end = np.linspace(-10,-.01,100)
+r1_front = np.linspace(1.02,10,100)
+r1_middle = np.linspace(0.05,0.97,5)
 
 # potential of straight line charge
 V1_trap_front =[]
 V1_trap_end =[]
+V1_trap_mid =[]
 V1_simp_front=[]
 V1_simp_end=[]
-V1_quad=[]
-v2_quad=[]
-
+V1_simp_mid=[]
+V_mid=[]
 
 for i in r1_front:
     dV1=f1vec(i,r1)
@@ -38,17 +39,26 @@ for j in r1_end:
     dV0=f1vec(j,r1)
     V1_trap_end.append(sci.trapz(r1,dV0)) # trapezoidal method
     V1_simp_end.append(sci.simps(r1,dV0)) # Simpson's rule
+for k in r1_middle:
+    dV_m= - f1vec(k,r1)
+    V1_trap_mid.append(sci.trapz(r1,dV_m)) # trapezoidal method
+    V1_simp_mid.append(sci.simps(r1,dV_m)) # Simpson's rule
+    
     
 # electric field for straight line charge
-E1_front_trap = -np.gradient(V1_trap_front,r1)
-E1_end_trap = -np.gradient(V1_trap_end,r1)
-E1_front_simp = -np.gradient(V1_simp_front,r1)
-E1_end_simp = -np.gradient(V1_simp_end,r1)   
+E1_front_trap = -np.gradient(V1_trap_front,r1_front)
+E1_end_trap = -np.gradient(V1_trap_end,r1_end)
+E1_mid_trap = -np.gradient(V1_trap_mid,r1_middle)
+E1_front_simp = -np.gradient(V1_simp_front,r1_front)
+E1_end_simp = -np.gradient(V1_simp_end,r1_end)   
+E1_mid_simp = -np.gradient(V1_simp_mid,r1_middle)
 
 # plottign V of straight line charge   
 pyplot.plot(r1_front,V1_trap_front,'b-')
+pyplot.plot(r1_middle,V1_trap_mid,'b-')
 pyplot.plot(r1_end,V1_trap_end,'b-', label="V by trapezoidal")
 pyplot.plot(r1_front,V1_simp_front,'r--')
+pyplot.plot(r1_middle,V1_simp_mid,'r--')
 pyplot.plot(r1_end,V1_simp_end,'r--',label="V by Simpson's")
 pyplot.xlabel('x')
 pyplot.ylabel('V(x)')
@@ -58,8 +68,10 @@ pyplot.show()
 
 # Plotting E field of straight line charge
 pyplot.plot(r1_front,E1_front_trap,'c-')
+pyplot.plot(r1_middle,E1_mid_trap,'c-')
 pyplot.plot(r1_end,E1_end_trap,'c-',label="E from V by trapezoidal")
 pyplot.plot(r1_front,E1_front_simp,'m--')
+pyplot.plot(r1_middle,E1_mid_simp,'m--')
 pyplot.plot(r1_end,E1_end_simp,'m--',label="E from V by Simpson's")
 pyplot.xlabel('x')
 pyplot.ylabel('E(x)')
@@ -96,6 +108,14 @@ diagram1.set_ylabel('y')
 diagram1.set_zlabel('V(x,y)')
 diagram1.view_init(60, 220)
 diagram1.set_title('Potential for right angle charge')
+
+
+fig_contour1 = pyplot.figure()
+pyplot.contourf(X1, Y1, V_rightangle, 20, cmap='RdGy')
+pyplot.colorbar();
+pyplot.xlabel('x')
+pyplot.ylabel('y')
+pyplot.title('Potential for right angle charge')
 
 # Plotting E_x of right angle charge
 fig2 = pyplot.figure()
@@ -146,6 +166,14 @@ diagram_disc_V.set_xlabel('x')
 diagram_disc_V.set_ylabel('y')
 diagram_disc_V.set_zlabel('V(x,y)')
 diagram_disc_V.set_title('Potential of disc charge')
+
+
+fig_contour2 = pyplot.figure()
+pyplot.contourf(X3, Y3, V_disc, 20, cmap='RdGy')
+pyplot.colorbar();
+pyplot.xlabel('x')
+pyplot.ylabel('y')
+pyplot.title('Potential for disc charge')
 
 # Plotting Ex of disc charge 
 fig5 = pyplot.figure()
