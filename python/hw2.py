@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[3]:
 
 
 import scipy.integrate as sci
@@ -139,6 +139,13 @@ diagram_Ey.set_zlabel('$E_y$(x,y)')
 diagram_Ey.view_init(60, 220)
 diagram_Ey.set_title('$E_y$ of right angle charge')
 
+# E field of right angle charge in quiver plot
+fig, d2 = pyplot.subplots()
+z_ra = d2.quiver(X3, Y3, E_rightangle_x, E_rightangle_y)
+d2.set_xlabel('x')
+d2.set_ylabel('y')
+d2.set_title('E field of right angle charge')
+
 # disc charge
 x3=np.linspace(-8,+8,50)
 y3=np.linspace(-8,+8,50)
@@ -194,6 +201,13 @@ diagram_disc_Ey.set_xlabel('x')
 diagram_disc_Ey.set_ylabel('y')
 diagram_disc_Ey.set_zlabel('$E_y$(x,y)')
 diagram_disc_Ey.set_title('$E_y$ of disc charge')
+
+# E field of disc charge in quiver plot
+fig, d1 = pyplot.subplots()
+z_disc = d1.quiver(X5, Y5, E_disc_x, E_disc_y)
+d1.set_xlabel('x')
+d1.set_ylabel('y')
+d1.set_title('E field of disc charge')
 
 
 
